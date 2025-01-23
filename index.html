@@ -6,8 +6,8 @@
     <title>台灣火車站抽選程式</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000, #333);
             color: #fff;
             text-align: center;
             padding: 20px;
@@ -15,18 +15,21 @@
         }
 
         h1 {
-            color: #fff;
-            font-size: 36px;
+            color: #00ffcc;
+            font-size: 40px;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 255, 255, 0.5);
         }
 
         #result, #person-result {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             margin-top: 20px;
-            height: 50px;
-            overflow: hidden;
+            padding: 10px;
+            border-radius: 8px;
             position: relative;
+            background: rgba(0, 255, 204, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 255, 204, 0.2);
         }
 
         #result {
@@ -51,40 +54,42 @@
         }
 
         .btn {
-            background-color: #fff;
-            color: #000;
+            background: linear-gradient(135deg, #00ffcc, #0066ff);
+            color: #fff;
             border: none;
             padding: 15px 30px;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 8px;
+            transition: all 0.3s ease;
             margin-top: 20px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
         }
 
         .btn:hover {
-            background-color: #00ff00;
-            color: #000;
+            background: linear-gradient(135deg, #00cc99, #0044cc);
+            transform: scale(1.05);
         }
 
         .container {
-            background: #111;
-            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 600px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffcc;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 255, 204, 0.5);
+            max-width: 700px;
             margin: 0 auto;
         }
 
         .footer {
             margin-top: 40px;
-            font-size: 14px;
-            color: #888;
+            font-size: 16px;
+            color: #aaa;
         }
 
         #progress-bar {
             width: 100%;
-            background: #333;
+            background: #444;
             border-radius: 10px;
             margin-top: 20px;
             overflow: hidden;
@@ -94,7 +99,7 @@
         #progress {
             width: 0;
             height: 100%;
-            background: #00ff00;
+            background: linear-gradient(135deg, #00ffcc, #0066ff);
             transition: width 0.1s ease;
         }
 
@@ -109,7 +114,7 @@
             }
 
             #result, #person-result {
-                font-size: 20px;
+                font-size: 22px;
             }
         }
     </style>
@@ -134,9 +139,7 @@
             "台北", "板橋", "樹林", "鶯歌", "桃園", "中壢", "楊梅", "湖口", "新豐", "竹北", "新竹", "香山", "崎頂", "竹南", "造橋", "豐富", "苗栗", "銅鑼", "三義",
             "后里", "豐原", "潭子", "太原", "台中", "宜蘭", "羅東", "冬山", "新馬", "蘇澳新", "蘇澳", "頭城", "外澳", "龜山", "大溪", "大里", "石城", "福隆", "貢寮", "雙溪", "牡丹",
             "三貂嶺", "侯硐", "瑞芳", "四腳亭", "基隆", "八堵", "七堵", "百福", "汐止", "汐科", "南港", "松山",
-            // 平溪線
             "大華", "十分", "平溪", "嶺腳", "望古",
-            // 宜蘭線延伸
             "二結", "中里", "新馬站", "冬山", "羅東", "頂埔", "南澳", "東澳"
         ];
 
@@ -156,7 +159,7 @@
             const maxCount = 50; // 跑馬燈的次數
 
             const audio = new Audio('https://www.soundjay.com/transportation/train-horn-2.mp3');
-            audio.play(); // 播放火車聲
+            audio.play();
 
             const interval = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * stations.length);
@@ -165,7 +168,6 @@
                 resultDiv.innerHTML = '';
                 resultDiv.appendChild(marquee);
 
-                // 更新進度條
                 const progressPercent = ((count + 1) / maxCount) * 100;
                 progress.style.width = progressPercent + '%';
 
@@ -173,31 +175,26 @@
 
                 if (count > maxCount) {
                     clearInterval(interval);
-                    trainButton.innerText = '火車站抽選完成';
-
-                    // 顯示下一步按鈕
-                    const nextButton = document.createElement('button');
-                    nextButton.className = 'btn';
-                    nextButton.innerText = '抽路人數字';
-                    nextButton.onclick = drawRandomPerson;
-                    document.querySelector('.container').appendChild(nextButton);
+                    trainButton.innerText = '開始抽火車站';
+                    trainButton.disabled = false;
 
                     resultDiv.innerText = `隨機抽選的火車站是: ${stationName}`;
-
                     resultDiv.style.transition = 'transform 0.3s ease';
                     resultDiv.style.transform = 'scale(1.2)';
                     setTimeout(() => {
                         resultDiv.style.transform = 'scale(1)';
                     }, 300);
+
+                    const nextButton = document.createElement('button');
+                    nextButton.className = 'btn';
+                    nextButton.innerText = '抽路人數字';
+                    nextButton.onclick = drawRandomPerson;
+                    document.querySelector('.container').appendChild(nextButton);
                 }
             }, 100);
         }
 
         function drawRandomPerson() {
-            const personButton = document.querySelector('.btn:not(#draw-train-btn)');
-            personButton.disabled = true;
-            personButton.innerText = '抽選路人數字中...';
-
             const personResultDiv = document.getElementById('person-result');
             personResultDiv.innerHTML = '';
 
@@ -217,20 +214,13 @@
 
                 if (count > maxCount) {
                     clearInterval(interval);
-                    personButton.innerText = '路人數字抽選完成';
 
                     personResultDiv.innerText = `問第 ${Math.floor(Math.random() * 10) + 1} 位路人！`;
-
                     personResultDiv.style.transition = 'transform 0.3s ease';
                     personResultDiv.style.transform = 'scale(1.2)';
                     setTimeout(() => {
                         personResultDiv.style.transform = 'scale(1)';
                     }, 300);
-
-                    // 禁用火車站按鈕
-                    const trainButton = document.getElementById('draw-train-btn');
-                    trainButton.disabled = true;
-                    trainButton.innerText = '功能已禁用';
                 }
             }, 100);
         }

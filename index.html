@@ -142,6 +142,20 @@
                     button.disabled = false;
                     button.innerText = '開始抽選';
                     resultDiv.innerText = `隨機抽選的火車站是: ${stationName}`;
+
+                    // 新增互動特效
+                    resultDiv.style.transition = 'transform 0.3s ease';
+                    resultDiv.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        resultDiv.style.transform = 'scale(1)';
+                    }, 300);
+
+                    // 顯示結束提示
+                    const endMessage = document.createElement('p');
+                    endMessage.innerText = '恭喜抽選完成！點擊按鈕再試一次！';
+                    endMessage.style.color = '#00ff00';
+                    endMessage.style.marginTop = '20px';
+                    resultDiv.appendChild(endMessage);
                 }
             }, 100);
         }

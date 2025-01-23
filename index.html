@@ -130,6 +130,7 @@
         </div>
         <div id="result">火車站抽選結果將顯示在此處</div>
         <div id="person-result"></div>
+        <button class="btn" id="draw-person-btn" style="display: none;" onclick="drawRandomPerson()">抽路人數字</button>
     </div>
 
     <div class="footer">
@@ -147,6 +148,7 @@
 
         function startDraw() {
             const trainButton = document.getElementById('draw-train-btn');
+            const personButton = document.getElementById('draw-person-btn');
             const progress = document.getElementById('progress');
             trainButton.disabled = true;
             trainButton.innerText = '抽選火車站中...';
@@ -187,17 +189,14 @@
                         resultDiv.style.transform = 'scale(1)';
                     }, 300);
 
-                    const nextButton = document.createElement('button');
-                    nextButton.className = 'btn';
-                    nextButton.innerText = '抽路人數字';
-                    nextButton.onclick = drawRandomPerson;
-                    document.querySelector('.container').appendChild(nextButton);
+                    personButton.style.display = 'inline-block';
                 }
             }, 100);
         }
 
         function drawRandomPerson() {
             const personResultDiv = document.getElementById('person-result');
+            const personButton = document.getElementById('draw-person-btn');
             personResultDiv.innerHTML = '';
 
             const marquee = document.createElement('div');
@@ -223,6 +222,8 @@
                     setTimeout(() => {
                         personResultDiv.style.transform = 'scale(1)';
                     }, 300);
+
+                    personButton.style.display = 'none';
                 }
             }, 100);
         }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣火車站抽選程式</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
+            margin-top: 20px;
+            height: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: marquee 0.2s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>台灣火車站抽選程式</h1>
+        <button class="btn" onclick="startDraw()">開始抽選</button>
+        <div id="result">火車站抽選結果將顯示在此處</div>
+    </div>
+
+    <div class="footer">
+        © 2025 台灣火車站抽選模擬程式
+    </div>
+
+    <script>
+        const stations = [
+            "台北", "板橋", "樹林", "鶯歌", "桃園", "中壢", "楊梅", "湖口", "新豐", "竹北", "新竹", "香山", "崎頂", "竹南", "造橋", "豐富", "苗栗", "銅鑼", "三義",
+            "后里", "豐原", "潭子", "太原", "台中", "宜蘭", "羅東", "冬山", "新馬", "蘇澳新", "蘇澳", "頭城", "外澳", "龜山", "大溪", "大里", "石城", "福隆", "貢寮", "雙溪", "牡丹",
+            "三貂嶺", "侯硐", "瑞芳", "四腳亭", "基隆", "八堵", "七堵", "百福", "汐止", "汐科", "南港", "松山",
+            // 平溪線
+            "大華", "十分", "平溪", "嶺腳", "望古",
+            // 宜蘭線延伸
+            "二結", "中里", "新馬站", "冬山", "羅東", "頂埔", "南澳", "東澳"
+        ];
+
+        function startDraw() {
+            const button = document.querySelector('.btn');
+            button.disabled = true;
+            button.innerText = '抽選中...';
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+
+            const marquee = document.createElement('div');
+            marquee.className = 'marquee';
+
+            let count = 0;
+            const maxCount = 50; // 跑馬燈的次數
+
+            const interval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * stations.length);
+                const stationName = stations[randomIndex];
+                marquee.innerText = stationName;
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(marquee);
+                count++;
+
+                if (count > maxCount) {
+                    clearInterval(interval);
+                    button.disabled = false;
+                    button.innerText = '開始抽選';
+                    resultDiv.innerText = `隨機抽選的火車站是: ${stationName}`;
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>

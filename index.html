@@ -11,6 +11,7 @@
             color: #fff;
             text-align: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         h1 {
@@ -74,6 +75,22 @@
             color: #888;
         }
 
+        #progress-bar {
+            width: 100%;
+            background: #333;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            height: 20px;
+        }
+
+        #progress {
+            width: 0;
+            height: 100%;
+            background: #00ff00;
+            transition: width 0.1s ease;
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 28px;
@@ -94,6 +111,9 @@
     <div class="container">
         <h1>台灣火車站抽選程式</h1>
         <button class="btn" onclick="startDraw()">開始抽選</button>
+        <div id="progress-bar">
+            <div id="progress"></div>
+        </div>
         <div id="result">火車站抽選結果將顯示在此處</div>
     </div>
 
@@ -114,6 +134,7 @@
 
         function startDraw() {
             const button = document.querySelector('.btn');
+            const progress = document.getElementById('progress');
             button.disabled = true;
             button.innerText = '抽選中...';
 
@@ -135,6 +156,11 @@
                 marquee.innerText = stationName;
                 resultDiv.innerHTML = '';
                 resultDiv.appendChild(marquee);
+
+                // 更新進度條
+                const progressPercent = ((count + 1) / maxCount) * 100;
+                progress.style.width = progressPercent + '%';
+
                 count++;
 
                 if (count > maxCount) {
@@ -143,7 +169,7 @@
                     button.innerText = '開始抽選';
                     resultDiv.innerText = `隨機抽選的火車站是: ${stationName}`;
 
-                    // 新增互動特效
+                    // 結束時的動畫
                     resultDiv.style.transition = 'transform 0.3s ease';
                     resultDiv.style.transform = 'scale(1.2)';
                     setTimeout(() => {

@@ -117,7 +117,7 @@
 <body>
     <div class="container">
         <h1>台灣火車站抽選程式</h1>
-        <button class="btn" onclick="startDraw()">開始抽選</button>
+        <button class="btn" id="draw-train-btn" onclick="startDraw()">開始抽火車站</button>
         <div id="progress-bar">
             <div id="progress"></div>
         </div>
@@ -141,10 +141,10 @@
         ];
 
         function startDraw() {
-            const button = document.querySelector('.btn');
+            const trainButton = document.getElementById('draw-train-btn');
             const progress = document.getElementById('progress');
-            button.disabled = true;
-            button.innerText = '抽選中...';
+            trainButton.disabled = true;
+            trainButton.innerText = '抽選火車站中...';
 
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = '';
@@ -173,7 +173,7 @@
 
                 if (count > maxCount) {
                     clearInterval(interval);
-                    button.innerText = '抽選完成';
+                    trainButton.innerText = '火車站抽選完成';
 
                     // 顯示下一步按鈕
                     const nextButton = document.createElement('button');
@@ -189,25 +189,50 @@
                     setTimeout(() => {
                         resultDiv.style.transform = 'scale(1)';
                     }, 300);
-
-                    const endMessage = document.createElement('p');
-                    endMessage.innerText = '恭喜抽選完成！點擊按鈕抽選下一個項目！';
-                    endMessage.style.color = '#00ff00';
-                    endMessage.style.marginTop = '20px';
-                    resultDiv.appendChild(endMessage);
                 }
             }, 100);
         }
 
         function drawRandomPerson() {
-            const personNumber = Math.floor(Math.random() * 10) + 1;
+            const personButton = document.querySelector('.btn:not(#draw-train-btn)');
+            personButton.disabled = true;
+            personButton.innerText = '抽選路人數字中...';
+
             const personResultDiv = document.getElementById('person-result');
-            personResultDiv.innerText = `問第 ${personNumber} 位路人！`;
-            personResultDiv.style.transition = 'transform 0.3s ease';
-            personResultDiv.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                personResultDiv.style.transform = 'scale(1)';
-            }, 300);
+            personResultDiv.innerHTML = '';
+
+            const marquee = document.createElement('div');
+            marquee.className = 'marquee';
+
+            let count = 0;
+            const maxCount = 50; // 跑馬燈的次數
+
+            const interval = setInterval(() => {
+                const randomNumber = Math.floor(Math.random() * 10) + 1;
+                marquee.innerText = `第 ${randomNumber} 位路人`;
+                personResultDiv.innerHTML = '';
+                personResultDiv.appendChild(marquee);
+
+                count++;
+
+                if (count > maxCount) {
+                    clearInterval(interval);
+                    personButton.innerText = '路人數字抽選完成';
+
+                    personResultDiv.innerText = `問第 ${Math.floor(Math.random() * 10) + 1} 位路人！`;
+
+                    personResultDiv.style.transition = 'transform 0.3s ease';
+                    personResultDiv.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        personResultDiv.style.transform = 'scale(1)';
+                    }, 300);
+
+                    // 禁用火車站按鈕
+                    const trainButton = document.getElementById('draw-train-btn');
+                    trainButton.disabled = true;
+                    trainButton.innerText = '功能已禁用';
+                }
+            }, 100);
         }
     </script>
 </body>

@@ -165,25 +165,36 @@
 
                 if (count > maxCount) {
                     clearInterval(interval);
-                    button.disabled = false;
-                    button.innerText = '開始抽選';
+                    button.innerText = '抽選完成';
+
+                    // 顯示下一步按鈕
+                    const nextButton = document.createElement('button');
+                    nextButton.className = 'btn';
+                    nextButton.innerText = '抽路人數字';
+                    nextButton.onclick = drawRandomPerson;
+                    document.querySelector('.container').appendChild(nextButton);
+
                     resultDiv.innerText = `隨機抽選的火車站是: ${stationName}`;
 
-                    // 結束時的動畫
                     resultDiv.style.transition = 'transform 0.3s ease';
                     resultDiv.style.transform = 'scale(1.2)';
                     setTimeout(() => {
                         resultDiv.style.transform = 'scale(1)';
                     }, 300);
 
-                    // 顯示結束提示
                     const endMessage = document.createElement('p');
-                    endMessage.innerText = '恭喜抽選完成！點擊按鈕再試一次！';
+                    endMessage.innerText = '恭喜抽選完成！點擊按鈕抽選下一個項目！';
                     endMessage.style.color = '#00ff00';
                     endMessage.style.marginTop = '20px';
                     resultDiv.appendChild(endMessage);
                 }
             }, 100);
+        }
+
+        function drawRandomPerson() {
+            const personNumber = Math.floor(Math.random() * 10) + 1;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = `問第 ${personNumber} 位路人！`;
         }
     </script>
 </body>
